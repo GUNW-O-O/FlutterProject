@@ -5,7 +5,7 @@ import 'vocabulary_screen.dart';
 import 'passage_screen.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({super.key});
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -35,10 +35,10 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_appBarTitles[_selectedIndex]),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   title: Text(_appBarTitles[_selectedIndex]),
+      //   centerTitle: true,
+      // ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),

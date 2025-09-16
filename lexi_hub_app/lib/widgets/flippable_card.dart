@@ -1,10 +1,9 @@
-
 import 'dart:math';
 import 'package:flutter/material.dart';
-import '../models/flashcard_model.dart';
+import '../models/note_model.dart'; // Updated import
 
 class FlippableCard extends StatefulWidget {
-  final Flashcard flashcard;
+  final FlashcardItem flashcard; // Updated to use FlashcardItem
 
   const FlippableCard({Key? key, required this.flashcard}) : super(key: key);
 
@@ -16,7 +15,6 @@ class _FlippableCardState extends State<FlippableCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  bool _isFlipped = false;
 
   @override
   void initState() {
@@ -30,6 +28,15 @@ class _FlippableCardState extends State<FlippableCard>
         setState(() {});
       });
   }
+  
+  // Reset the card to the front when the widget is updated with a new card
+  @override
+  void didUpdateWidget(covariant FlippableCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.flashcard.word != oldWidget.flashcard.word) {
+      _controller.reset();
+    }
+  }
 
   @override
   void dispose() {
@@ -40,14 +47,8 @@ class _FlippableCardState extends State<FlippableCard>
   void _handleTap() {
     if (_controller.isCompleted || _controller.isAnimating) {
       _controller.reverse();
-      setState(() {
-        _isFlipped = false;
-      });
     } else {
       _controller.forward();
-      setState(() {
-        _isFlipped = true;
-      });
     }
   }
 
@@ -68,7 +69,7 @@ class _FlippableCardState extends State<FlippableCard>
             : Transform(
                 transform: Matrix4.identity()..rotateY(pi),
                 alignment: Alignment.center,
-                child: _buildCardFace(widget.flashcard.definition, isFront: false),
+                child: _buildCardFace(widget.flashcard.meaning, isFront: false), // Updated to use .meaning
               ),
       ),
     );
